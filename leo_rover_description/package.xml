@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>leo_rover_description</name>
+  <version>1.0.2</version>
+  <description>
+    URDF Description package for Leo Rover
+  </description>
+
+  <maintainer email="support@fictionlab.pl">Fictionlab</maintainer>
+  <author email="blazej@fictionlab.pl">Błażej Sowa</author>
+
+  <license>MIT</license>
+
+  <depend>ament_cmake</depend>
+
+  <depend>xacro</depend>
+  <depend>robot_state_publisher</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+
+</package>
