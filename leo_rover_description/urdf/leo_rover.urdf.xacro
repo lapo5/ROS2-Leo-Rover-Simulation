@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<robot name="leo_rover">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="leo_rover">
 
-    <!-- LINKS -->
+    <xacro:include filename="leo_gazebo.xacro"/>
+
+    <!-- Base Footprint -->
+    
     <link name="base_footprint"/>
+
+
+    <!-- Base link -->
+
+    <joint name="base_joint" type="fixed">
+      <origin xyz="0 0 0.19783" rpy="0 0 0"/>
+      <parent link="base_footprint"/>
+      <child link="base_link"/>
+    </joint>
 
     <link name="base_link">
       <inertial>
@@ -24,6 +36,18 @@
         </geometry>
       </collision>
     </link>
+
+
+    <!-- Rocker left link -->
+
+    <joint name="rocker_L_joint" type="revolute">
+      <origin xyz="0.00263 0.14167 -0.04731" rpy="0 0 3.14"/>
+      <parent link="base_link"/>
+      <child link="rocker_L_link"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="100.0" lower="-0.24" upper="0.24" velocity="100.0"/>
+      <dynamics friction="1.0" damping="0.1"/>
+    </joint>
 
     <link name="rocker_L_link">
       <inertial>
@@ -47,6 +71,18 @@
     </link>
 
 
+    <!-- Rocker right link -->
+
+    <joint name="rocker_R_joint" type="revolute">
+      <origin xyz="0.00263 -0.14167 -0.04731" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="rocker_R_link"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="100.0" lower="-0.24" upper="0.24" velocity="100.0"/>
+      <dynamics friction="1.0" damping="0.1"/> 
+      <mimic joint="rocker_L_joint"/>
+    </joint>
+
     <link name="rocker_R_link">
       <inertial>
         <mass value="1.387336"/>
@@ -67,6 +103,18 @@
         </geometry>
       </collision>
     </link>
+
+
+    <!-- Wheel front-left link -->
+
+    <joint name="wheel_FL_joint" type="continuous">
+      <origin xyz="-0.15256 -0.08214 -0.08802" rpy="0 0 0"/>
+      <parent link="rocker_L_link"/>
+      <child link="wheel_FL_link"/>
+      <axis xyz="0 -1 0"/>
+      <limit effort="2.0" velocity="6.0"/>
+      <dynamics friction="0.3125" damping="0.1"/>
+    </joint>
 
     <link name="wheel_FL_link">
       <inertial>
@@ -101,6 +149,18 @@
       </collision>
     </link>
 
+
+    <!-- Wheel rear-left link -->
+
+    <joint name="wheel_RL_joint" type="continuous">
+      <origin xyz="0.15256 -0.08214 -0.08802" rpy="0 0 0"/>
+      <parent link="rocker_L_link"/>
+      <child link="wheel_RL_link"/>
+      <axis xyz="0 -1 0"/>
+      <limit effort="2.0" velocity="6.0"/>
+      <dynamics friction="0.3125" damping="0.1"/>
+    </joint>
+
     <link name="wheel_RL_link">
       <inertial>
         <mass value="0.283642"/>
@@ -133,6 +193,18 @@
         </geometry>
       </collision>
     </link>
+
+
+    <!-- Wheel front-right link -->
+
+    <joint name="wheel_FR_joint" type="continuous">
+      <origin xyz="0.15256 -0.08214 -0.08802" rpy="0 0 0"/>
+      <parent link="rocker_R_link"/>
+      <child link="wheel_FR_link"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="2.0" velocity="6.0"/>
+      <dynamics friction="0.3125" damping="0.1"/>
+    </joint>
 
     <link name="wheel_FR_link">
       <inertial>
@@ -167,6 +239,18 @@
       </collision>
     </link>
 
+
+    <!-- Wheel rear-right link -->
+
+    <joint name="wheel_RR_joint" type="continuous">
+      <origin xyz="-0.15256 -0.08214 -0.08802" rpy="0 0 0"/>
+      <parent link="rocker_R_link"/>
+      <child link="wheel_RR_link"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="2.0" velocity="6.0"/>
+      <dynamics friction="0.3125" damping="0.1"/> 
+    </joint>
+
     <link name="wheel_RR_link">
       <inertial>
         <mass value="0.283642"/>
@@ -200,6 +284,15 @@
       </collision>
     </link>
 
+
+    <!-- Antenna link -->
+
+    <joint name="antenna_joint" type="fixed">
+      <origin xyz="-0.0052 0.056 -0.0065" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="antenna_link"/>
+    </joint>
+
     <link name="antenna_link">
       <inertial>
         <mass value="0.001237"/>
@@ -222,78 +315,8 @@
       </collision>
     </link>
 
-    <link name="camera_frame"/>
-    <link name="camera_optical_frame"/>
-    <link name="imu_frame"/>
 
-    <!-- JOINTS -->
-
-    <joint name="base_joint" type="fixed">
-      <origin xyz="0 0 0.19783" rpy="0 0 0"/>
-      <parent link="base_footprint"/>
-      <child link="base_link"/>
-    </joint>
-
-    <joint name="rocker_L_joint" type="revolute">
-      <origin xyz="0.00263 0.14167 -0.04731" rpy="0 0 3.14"/>
-      <parent link="base_link"/>
-      <child link="rocker_L_link"/>
-      <axis xyz="0 1 0"/>
-      <limit effort="100.0" lower="-0.24" upper="0.24" velocity="100.0"/>
-      <dynamics friction="1.0" damping="0.1"/>
-    </joint>
-
-    <joint name="rocker_R_joint" type="revolute">
-      <origin xyz="0.00263 -0.14167 -0.04731" rpy="0 0 0"/>
-      <parent link="base_link"/>
-      <child link="rocker_R_link"/>
-      <axis xyz="0 1 0"/>
-      <limit effort="100.0" lower="-0.24" upper="0.24" velocity="100.0"/>
-      <dynamics friction="1.0" damping="0.1"/> 
-      <mimic joint="rocker_L_joint"/>
-    </joint>
-
-    <joint name="wheel_FL_joint" type="continuous">
-      <origin xyz="-0.15256 -0.08214 -0.08802" rpy="0 0 0"/>
-      <parent link="rocker_L_link"/>
-      <child link="wheel_FL_link"/>
-      <axis xyz="0 -1 0"/>
-      <limit effort="2.0" velocity="6.0"/>
-      <dynamics friction="0.3125" damping="0.1"/>
-    </joint>
-
-    <joint name="wheel_RL_joint" type="continuous">
-      <origin xyz="0.15256 -0.08214 -0.08802" rpy="0 0 0"/>
-      <parent link="rocker_L_link"/>
-      <child link="wheel_RL_link"/>
-      <axis xyz="0 -1 0"/>
-      <limit effort="2.0" velocity="6.0"/>
-      <dynamics friction="0.3125" damping="0.1"/>
-    </joint>
-
-    <joint name="wheel_FR_joint" type="continuous">
-      <origin xyz="0.15256 -0.08214 -0.08802" rpy="0 0 0"/>
-      <parent link="rocker_R_link"/>
-      <child link="wheel_FR_link"/>
-      <axis xyz="0 1 0"/>
-      <limit effort="2.0" velocity="6.0"/>
-      <dynamics friction="0.3125" damping="0.1"/>
-    </joint>
-
-    <joint name="wheel_RR_joint" type="continuous">
-      <origin xyz="-0.15256 -0.08214 -0.08802" rpy="0 0 0"/>
-      <parent link="rocker_R_link"/>
-      <child link="wheel_RR_link"/>
-      <axis xyz="0 1 0"/>
-      <limit effort="2.0" velocity="6.0"/>
-      <dynamics friction="0.3125" damping="0.1"/> 
-    </joint>
-
-    <joint name="antenna_joint" type="fixed">
-      <origin xyz="-0.0052 0.056 -0.0065" rpy="0 0 0"/>
-      <parent link="base_link"/>
-      <child link="antenna_link"/>
-    </joint>
+    <!-- Camera link -->
 
     <joint name="camera_joint" type="fixed">
       <origin xyz="0.0971 0 -0.0427" rpy="0 0.2094 0"/>
@@ -301,18 +324,27 @@
       <child link="camera_frame"/>
     </joint>
 
+    <link name="camera_frame"/>
+
+
+    <!-- Camera optical link -->
+
     <joint name="camera_optical_joint" type="fixed">
       <origin xyz="0 0 0" rpy="-1.57 0.0 -1.57"/>
       <parent link="camera_frame"/>
       <child link="camera_optical_frame"/>
     </joint>
 
+    <link name="camera_optical_frame"/>
+
+
+    <!-- Imu link -->
+
     <joint name="imu_joint" type="fixed">
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <parent link="base_link"/>
       <child link="imu_frame"/>
     </joint>
-
 
   <!-- LEO GAZEBO -->
 

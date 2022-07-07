@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+    <!-- LEO GAZEBO -->
+
+    <gazebo>
+    <plugin name="mimic_joint" filename="libmimic_joint_plugin.so">
+        <joint>wheel_FL_joint</joint>
+        <mimic_joint>wheel_RL_joint</mimic_joint>
+    </plugin>
+    </gazebo>
+  
+    <gazebo>
+    <plugin name="mimic_joint" filename="libmimic_joint_plugin.so">
+        <joint>wheel_FR_joint</joint>
+        <mimic_joint>wheel_RR_joint</mimic_joint>
+    </plugin>
+    </gazebo>
+  
+    <!-- camera -->
+    <gazebo reference="camera_frame">
+    <sensor type="camera" name="camera">
+        <always_on>true</always_on>
+        <update_rate>30.0</update_rate>
+        <visualize>false</visualize> 
+        <camera name="leo_camera">
+        <horizontal_fov>1.9</horizontal_fov>
+        <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+        </image>
+        <clip>
+            <near>0.02</near>
+            <far>300</far>
+        </clip>
+        <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+        </noise>
+        <distortion>
+            <k1>-0.279817</k1>
+            <k2>0.060321</k2>
+            <k3>0.000487</k3>
+            <p1>0.000310</p1>
+            <p2>0.000000</p2>
+            <center>0.5 0.5</center>
+        </distortion>
+        </camera>
+        <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <frame_name>camera_optical_frame</frame_name>
+        </plugin>
+    </sensor>
+    </gazebo>
+  
+    <!-- rocker differential -->
+    <gazebo>
+    <plugin name="rocker_differential" filename="libleo_gazebo_differential_plugin.so">
+        <jointA>rocker_L_joint</jointA>
+        <jointB>rocker_R_joint</jointB>
+        <forceConstant>100.0</forceConstant>
+    </plugin>
+    </gazebo>
+
+    <gazebo>
+    <plugin filename="libgazebo_ros_diff_drive.so" name="differential_drive_controller">
+
+        <!-- wheels -->
+        <left_joint>wheel_FL_joint</left_joint>
+        <right_joint>wheel_FR_joint</right_joint>
+
+        <!-- kinematics -->
+        <wheel_separation>0.33</wheel_separation>
+        <wheel_diameter>0.125</wheel_diameter>
+
+        <!-- limits -->
+        <max_wheel_torque>0.1</max_wheel_torque>
+        <max_wheel_acceleration>1.0</max_wheel_acceleration>
+
+        <!-- output -->
+        <publish_odom>true</publish_odom>
+        <publish_odom_tf>true</publish_odom_tf>
+
+        <odometry_frame>odom</odometry_frame>
+        <robot_base_frame>base_link</robot_base_frame>
+
+    </plugin>
+    </gazebo>
+
+    <gazebo reference="imu_frame">
+    <sensor type="imu" name="leo_imu_sensor">
+        <update_rate>100</update_rate>
+        <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <topicName>imu/data_raw</topicName>
+        <frameName>imu_frame</frameName>
+        <updateRateHZ>100.0</updateRateHZ>
+        <gaussianNoise>0.01</gaussianNoise>
+        <initialOrientationAsReference>false</initialOrientationAsReference>
+        </plugin>
+    </sensor>
+    </gazebo>
+  
+    <ros2_control name="GazeboSystem" type="system">
+    <hardware>
+        <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+    </hardware>
+    <joint name="rocker_L_joint">
+        <state_interface name="position"/>
+    </joint>
+    <joint name="rocker_R_joint">
+        <state_interface name="position"/>
+    </joint>
+    <joint name="wheel_FL_joint">
+        <command_interface name="velocity">
+        <param name="min">-6</param>
+        <param name="max">6</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+    </joint>
+    <joint name="wheel_RL_joint">
+        <command_interface name="velocity">
+        <param name="min">-6</param>
+        <param name="max">6</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+    </joint>
+    <joint name="wheel_FR_joint">
+        <command_interface name="velocity">
+        <param name="min">-6</param>
+        <param name="max">6</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+    </joint>
+    <joint name="wheel_RR_joint">
+        <command_interface name="velocity">
+        <param name="min">-6</param>
+        <param name="max">6</param>
+        </command_interface>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+    </joint>
+    </ros2_control>
+  
+    <gazebo>
+    <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+        <robot_param>robot_description</robot_param>
+        <robot_param_node>robot_state_publisher</robot_param_node>
+        <parameters>/home/marco/simulations_ros2_devel/src/leo_simulator/leo_rover_description/config/controllers.yaml</parameters>
+    </plugin>
+    </gazebo>
+
+
+</robot>
