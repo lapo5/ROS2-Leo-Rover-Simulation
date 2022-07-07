@@ -26,16 +26,11 @@ def generate_launch_description():
     )
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
-    urdf_file_name = 'urdf/leo_rover.urdf.xacro'
-
-    urdf = os.path.join(
-      pkg_leo_description,
-      urdf_file_name)
-
-    print(f"urdf_file_name : {urdf}")
-
 
     xacro_file = os.path.join(pkg_leo_description,'urdf','leo_rover.urdf.xacro')
+
+    print(f"xacro_file : {xacro_file}")
+
     robot_description_config = xacro.process_file(xacro_file)
     params = {'robot_description': robot_description_config.toxml(), 'use_sim_time': use_sim_time}
 
@@ -45,7 +40,7 @@ def generate_launch_description():
             name='robot_state_publisher',
             output='screen',
             parameters=[params]
-            )
+    )
 
 
     # GAZEBO_MODEL_PATH has to be correctly set for Gazebo to be able to find the model

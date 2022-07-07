@@ -346,6 +346,8 @@
       <child link="imu_frame"/>
     </joint>
 
+    <link name="imu_frame"/>
+    
   <!-- LEO GAZEBO -->
 
     <gazebo>
@@ -494,7 +496,7 @@
       <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
         <robot_param>robot_description</robot_param>
         <robot_param_node>robot_state_publisher</robot_param_node>
-        <parameters>/home/marco/leo_rover_ws/ros2_packages/src/leo_simulator/leo_rover_description/config/controllers.yaml</parameters>
+        <parameters>$(find leo_rover_description)/config/controllers.yaml</parameters>
       </plugin>
     </gazebo>
 
