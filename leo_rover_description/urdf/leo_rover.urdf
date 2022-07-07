@@ -330,7 +330,6 @@
       </plugin>
     </gazebo>
 
-    <!-- camera -->
     <gazebo reference="camera_frame">
       <sensor type="camera" name="camera">
         <always_on>true</always_on>
@@ -377,8 +376,9 @@
     </gazebo>
 
     <gazebo>
-      <plugin filename="libgazebo_ros_diff_drive.so" name="differential_drive_controller">
+      <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
 
+        <updateRate>10.0</updateRate>
         <!-- wheels -->
         <left_joint>wheel_FL_joint</left_joint>
         <right_joint>wheel_FR_joint</right_joint>
@@ -386,10 +386,6 @@
         <!-- kinematics -->
         <wheel_separation>0.33</wheel_separation>
         <wheel_diameter>0.125</wheel_diameter>
-
-        <!-- limits -->
-        <max_wheel_torque>0.1</max_wheel_torque>
-        <max_wheel_acceleration>1.0</max_wheel_acceleration>
 
         <!-- output -->
         <publish_odom>true</publish_odom>
@@ -463,12 +459,11 @@
     </ros2_control>
 
     <gazebo>
-      <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+      <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
         <robot_param>robot_description</robot_param>
         <robot_param_node>robot_state_publisher</robot_param_node>
-        <parameters>/home/marco/simulations_ros2_devel/src/leo_simulator/leo_rover_description/config/controllers.yaml</parameters>
+        <parameters>/home/marco/leo_rover_ws/ros2_packages/src/leo_simulator/leo_rover_description/config/controllers.yaml</parameters>
       </plugin>
     </gazebo>
-
 
 </robot>
