@@ -7,7 +7,6 @@
     
     <link name="base_footprint"/>
 
-
     <!-- Base link -->
 
     <joint name="base_joint" type="fixed">
@@ -27,12 +26,12 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="model://Chassis.dae"/>
+          <mesh filename="file://$(find leo_rover_description)/models/Chassis.dae"/>
         </geometry>
       </visual>
       <collision>
         <geometry>
-          <mesh filename="model://Chassis_outline.stl"/>
+          <mesh filename="file://$(find leo_rover_description)/models/Chassis_outline.stl"/>
         </geometry>
       </collision>
     </link>
@@ -60,12 +59,12 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="model://Rocker.dae"/>
+          <mesh filename="file://$(find leo_rover_description)/models/Rocker.dae"/>
         </geometry>
       </visual>
       <collision>
         <geometry>
-          <mesh filename="model://Rocker_outline.stl"/>
+          <mesh filename="file://$(find leo_rover_description)/models/Rocker_outline.stl"/>
         </geometry>
       </collision>
     </link>
@@ -94,12 +93,12 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="model://Rocker.dae"/>
+          <mesh filename="file://$(find leo_rover_description)/models/Rocker.dae"/>
         </geometry>
       </visual>
       <collision>
         <geometry>
-          <mesh filename="model://Rocker_outline.stl"/>
+          <mesh filename="file://$(find leo_rover_description)/models/Rocker_outline.stl"/>
         </geometry>
       </collision>
     </link>
@@ -127,7 +126,7 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="model://WheelA.dae"/>
+          <mesh filename="file://$(find leo_rover_description)/models/WheelA.dae"/>
         </geometry>
       </visual>
       <collision>
@@ -144,7 +143,7 @@
       </collision>
       <collision>
         <geometry>
-          <mesh filename="model://Wheel_outline.stl"/>
+          <mesh filename="file://$(find leo_rover_description)/models/WheelA.stl"/>
         </geometry>
       </collision>
     </link>
@@ -172,7 +171,7 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="model://WheelA.dae"/>
+          <mesh filename="file://$(find leo_rover_description)/models/WheelA.dae"/>
         </geometry>
       </visual>
       <collision>
@@ -189,7 +188,7 @@
       </collision>
       <collision>
         <geometry>
-          <mesh filename="model://Wheel_outline.stl"/>
+          <mesh filename="file://$(find leo_rover_description)/models/WheelA.stl"/>
         </geometry>
       </collision>
     </link>
@@ -217,7 +216,7 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="model://WheelB.dae"/>
+          <mesh filename="file://$(find leo_rover_description)/models/WheelB.dae"/>
         </geometry>
       </visual>
       <collision>
@@ -234,7 +233,7 @@
       </collision>
       <collision>
         <geometry>
-          <mesh filename="model://Wheel_outline.stl"/>
+          <mesh filename="file://$(find leo_rover_description)/models/WheelB.stl"/>
         </geometry>
       </collision>
     </link>
@@ -262,7 +261,7 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="model://WheelB.dae"/>
+          <mesh filename="file://$(find leo_rover_description)/models/WheelB.dae"/>
         </geometry>
       </visual>
       <collision>
@@ -279,10 +278,15 @@
       </collision>
       <collision>
         <geometry>
-          <mesh filename="model://Wheel_outline.stl"/>
+          <mesh filename="file://$(find leo_rover_description)/models/WheelB.stl"/>
         </geometry>
       </collision>
     </link>
+
+
+    <link name="camera_frame"/>
+    <link name="camera_optical_frame"/>
+    <link name="imu_frame"/>
 
 
     <!-- Antenna link -->
@@ -304,7 +308,7 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="model://Antenna.dae"/>
+          <mesh filename="file://$(find leo_rover_description)/models/Antenna.dae"/>
         </geometry>
       </visual>
       <collision>
@@ -324,7 +328,6 @@
       <child link="camera_frame"/>
     </joint>
 
-    <link name="camera_frame"/>
 
 
     <!-- Camera optical link -->
@@ -335,7 +338,6 @@
       <child link="camera_optical_frame"/>
     </joint>
 
-    <link name="camera_optical_frame"/>
 
 
     <!-- Imu link -->
@@ -346,9 +348,80 @@
       <child link="imu_frame"/>
     </joint>
 
-    <link name="imu_frame"/>
     
   <!-- LEO GAZEBO -->
+
+      <!-- base ODE properties -->
+    <gazebo reference="base_footprint">
+      <kp>1e6</kp>
+      <kd>1.0</kd>
+      <mu1>0.3</mu1>
+      <mu2>0.3</mu2>
+      <minDepth>0.003</minDepth>
+    </gazebo>
+
+    <gazebo reference="base_link">
+      <kp>1e6</kp>
+      <kd>1.0</kd>
+      <mu1>0.3</mu1>
+      <mu2>0.3</mu2>
+      <minDepth>0.003</minDepth>
+    </gazebo>
+
+    <!-- rocker ODE properties -->
+    <gazebo reference="rocker_L_link">
+      <kp>1e6</kp>
+      <kd>1.0</kd>
+      <mu1>0.3</mu1>
+      <mu2>0.3</mu2>
+      <minDepth>0.003</minDepth>
+    </gazebo>
+
+    <gazebo reference="rocker_R_link">
+      <kp>1e6</kp>
+      <kd>1.0</kd>
+      <mu1>0.3</mu1>
+      <mu2>0.3</mu2>
+      <minDepth>0.003</minDepth>
+    </gazebo>
+
+
+    <!-- wheel ODE properties -->
+    <gazebo reference="wheel_FL_link">
+      <kp>1e6</kp>
+      <kd>100.0</kd>
+      <mu1>3.0</mu1>
+      <mu2>0.1</mu2>
+      <fdir1>1 0 0</fdir1>
+      <minDepth>0.003</minDepth>
+    </gazebo>
+
+    <gazebo reference="wheel_FR_link">
+      <kp>1e6</kp>
+      <kd>100.0</kd>
+      <mu1>3.0</mu1>
+      <mu2>0.1</mu2>
+      <fdir1>1 0 0</fdir1>
+      <minDepth>0.003</minDepth>
+    </gazebo>
+
+    <gazebo reference="wheel_RL_link">
+      <kp>1e6</kp>
+      <kd>100.0</kd>
+      <mu1>3.0</mu1>
+      <mu2>0.1</mu2>
+      <fdir1>1 0 0</fdir1>
+      <minDepth>0.003</minDepth>
+    </gazebo>
+
+    <gazebo reference="wheel_RR_link">
+      <kp>1e6</kp>
+      <kd>100.0</kd>
+      <mu1>3.0</mu1>
+      <mu2>0.1</mu2>
+      <fdir1>1 0 0</fdir1>
+      <minDepth>0.003</minDepth>
+    </gazebo>
 
     <gazebo>
       <plugin name="mimic_joint" filename="libmimic_joint_plugin.so">
@@ -418,8 +491,8 @@
         <right_joint>wheel_FR_joint</right_joint>
 
         <!-- kinematics -->
-        <wheel_separation>0.33</wheel_separation>
-        <wheel_diameter>0.125</wheel_diameter>
+        <wheel_separation>0.355</wheel_separation>
+        <wheel_diameter>0.115</wheel_diameter>
 
         <!-- output -->
         <publish_odom>true</publish_odom>
