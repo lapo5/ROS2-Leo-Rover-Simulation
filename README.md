@@ -12,8 +12,13 @@ Simulation for the Leo Rover (Gazebo)
 
 ## Launch Simulation
 
+### Standard Simulation with Empty World
+
 ros2 launch leo_gazebo leo_rover.launch.py
 
+### Simulate LEO on Mars
+
+ros2 launch leo_gazebo leo_rover_on_mars.launch.py
 
 ## Bridge Real Robot with Simulation with ROS Bridge
 
