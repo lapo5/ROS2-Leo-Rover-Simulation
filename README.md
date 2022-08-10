@@ -8,6 +8,8 @@ Simulation for the Leo Rover (Gazebo)
 	- mimic_joint_plugin: to couple front and rear wheel on each side
 	- differential_plugin: to emulate passive boogie
 
+- Mars World (leo_gazebo_worlds): Mars World from MIT LEO Competitions
+
 - Leo Rover Description: fork of ROS2 package, to work with Gazebo ROS2
 
 ## Launch Simulation
