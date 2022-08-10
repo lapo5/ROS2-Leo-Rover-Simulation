@@ -20,15 +20,21 @@ ros2 launch leo_gazebo leo_rover.launch.py
 ### Create ROS1 msgs ws (ros1_msgs), with src folder inside
 
 copy leo_msgs (ros1)
+
 cd ..
+
 ros_source
+
 catkin_make_isolated --install
 
 ### Create ROS2 msgs ws (ros2_msgs), with src folder inside
 
 copy leo_msgs (ros2)
+
 cd ..
+
 ros2_source
+
 colcon build
 
 ### Create BRIDGE ws
@@ -44,13 +50,18 @@ sudo apt remove ros-foxy-controller-manager-msgs
 
 ### Compile ROS Bridge
 source /opt/ros/noetic/setup.bash
+
 source /opt/ros/foxy/setup.bash 
+
 source ../ros1_msgs/install_isolated/setup.bash
+
 source ../ros2_msgs/install/setup.bash
+
 colcon build --cmake-force-configure
 
 ### Check leo msgs are mapped
 source install/setup.bash
+
 ros2 run ros1_bridge dynamic_bridge --print-pairs
 
 ### Start the Bridge
