@@ -18,11 +18,11 @@ def generate_launch_description():
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
     pkg_leo_description = get_package_share_directory('leo_rover_description')
 
-    pkg_leo_gazebo_worlds = get_package_share_directory('leo_gazebo_worlds')
+    pkg_mars_worlds = get_package_share_directory('leo_gazebo_worlds')
 
     # Set the path to the world file
     world_file_name = 'marsyard2021.world'
-    world_path = os.path.join(pkg_leo_gazebo_worlds, 'worlds', world_file_name)
+    world_path = os.path.join(pkg_mars_worlds, 'worlds', world_file_name)
    
     declare_world_cmd = DeclareLaunchArgument(
         name='world',
@@ -37,28 +37,28 @@ def generate_launch_description():
     )
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
-    urdf_file_name = 'urdf/leo_rover.urdf'
 
-    urdf = os.path.join(
-      pkg_leo_description,
-      urdf_file_name)
+    xacro_file = os.path.join(pkg_leo_description,'urdf','leo_rover.urdf.xacro')
 
-    print("urdf_file_name : {}".format(urdf))
+    print(f"xacro_file : {xacro_file}")
+
+    robot_description_config = xacro.process_file(xacro_file)
+    params = {'robot_description': robot_description_config.toxml(), 'use_sim_time': use_sim_time}
 
     robot_state_pub = Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
             name='robot_state_publisher',
             output='screen',
-            parameters=[{'use_sim_time': use_sim_time}],
-            arguments=[urdf])
+            parameters=[params]
+    )
 
 
     # GAZEBO_MODEL_PATH has to be correctly set for Gazebo to be able to find the model
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                         arguments=['-entity', 'leo_rover', '-topic', '/robot_description'],
                         output='screen')
-
+    
     return LaunchDescription([
 
         DeclareLaunchArgument(
