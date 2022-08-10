@@ -22,6 +22,11 @@ ros2 launch leo_gazebo leo_rover.launch.py
 
 ros2 launch leo_gazebo leo_rover_on_mars.launch.py
 
+### Simulate LEO on Moon (Check Gravity!)
+
+Depend on https://github.com/FlaSpaceInst/ezrassor_sim_gazebo
+ros2 launch leo_gazebo leo_rover_on_moon.launch.py
+
 ## Bridge Real Robot with Simulation with ROS Bridge
 
 ### Create ROS1 msgs ws (ros1_msgs), with src folder inside
