@@ -17,13 +17,12 @@ def generate_launch_description():
 
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
     pkg_leo_description = get_package_share_directory('leo_rover_description')
-    pkg_leo_gazebo_worlds = get_package_share_directory('leo_gazebo_worlds')
+
     pkg_ezrassor_worlds = get_package_share_directory('ezrassor_sim_gazebo')
 
-
     # Set the path to the world file
-    world_file_name = 'marsyard2021.world'
-    world_path = os.path.join(pkg_leo_gazebo_worlds, 'worlds', world_file_name)
+    world_file_name = 'moon.world'
+    world_path = os.path.join(pkg_ezrassor_worlds, 'worlds', world_file_name)
    
     declare_world_cmd = DeclareLaunchArgument(
         name='world',
